@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="content">
+    <form class="filters" [formGroup]="catsForm">
+      <mat-form-field>
+        <mat-label>Breed</mat-label>
+        <mat-select [formControl]="breedControl" name="breed">
+          <mat-option *ngFor="let breed of breeds" [value]="breed.id">{{breed.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <img src="https://www.google.com/logos/fnbx/animal_paws/cat_kp_dm.gif" alt="it must be cat heand" class="clicker" (click)="showKitties()">
+      <mat-form-field>
+        <mat-label>Per page</mat-label>
+        <mat-select [formControl]="perPageControl" name="perPage">
+          <mat-option *ngFor="let list of perPageList" [value]="list">{{list}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+    <div class="images">
+      <div *ngFor="let cat of catsList">
+        <img [src]="cat.url" [alt]="cat.id" class="images__cats">
+      </div>
+    </div>
+  </div> 
+</div>
+
+
