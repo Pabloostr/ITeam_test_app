@@ -12,6 +12,10 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { QuizComponent } from './components/quiz/quiz.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { ReactiveFormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { CatsEffects } from './reducers/cat.effects';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -28,6 +32,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatRadioModule,
     HttpClientModule,
     ReactiveFormsModule,
+    StoreModule.forRoot(reducers, {
+      metaReducers
+    }),
+    EffectsModule.forRoot([CatsEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { map, take, tap } from 'rxjs';
-import { CatBreedService } from 'src/app/services/cat-breed.service';
+import { Store } from '@ngrx/store';
+import { getBreeds, getCats } from 'src/app/reducers/cat.actions';
+import { breeds, cats } from 'src/app/reducers/cat.selectors';
 
 @Component({
   selector: 'app-main-page',
@@ -20,24 +21,20 @@ export class MainPageComponent implements OnInit {
     perPage: this.perPageControl,
   });
 
-  constructor(private http: CatBreedService) {}
+  breeds$ = this.store.select(breeds);
+  cats$ = this.store.select(cats);
+
+  constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.getBreeds();
-  }
-  getBreeds(): void {
-    this.http
-    .getBreeds()
-    .pipe(
-      take(1),
-      map((array) => array.map((obj) => ({ name: obj.name, id: obj.id })))
-    )
-    .subscribe((result) => (this.breeds = result));
+    this.store.dispatch(getBreeds());
   }
   showKitties(): void {
-    this.http
-      .getCats(this.catsForm.value.perPage, this.catsForm.value.breed)
-      .pipe(take(1))
-      .subscribe((result) => this.catsList = result);
+    this.store.dispatch(
+      getCats({
+        limit: this.catsForm.value.perPage,
+        id: this.catsForm.value.breed,
+      })
+    );
   }
 }
